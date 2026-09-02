@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>奇物匣 · Curiosities</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-brand">Arcanum</a>
+  <div class="nav-links">
+    <a href="index.html">书桌</a>
+    <a href="projects.html">卷轴集</a>
+    <a href="toys.html" class="active">奇物匣</a>
+  </div>
+</nav>
+
+<main>
+  <article class="scroll-page reveal">
+    <h1 class="page-title">奇物匣</h1>
+    <p class="page-sub">"匣中所藏，皆为戏法小物。把玩之余，或可解颐。"</p>
+
+    <div class="page-divider">✦ ✦ ✦</div>
+
+    <!-- 玩意1：占卜水晶球 -->
+    <div class="toy reveal">
+      <h3>占卜水晶球</h3>
+      <p>凝视水晶，默念所问，轻触以问天机。</p>
+      <button class="btn-rune" id="oracleBtn">问卜</button>
+      <div class="oracle-display" id="oracleDisplay">⋯</div>
+    </div>
+
+    <!-- 玩意2：符文骰 -->
+    <div class="toy reveal">
+      <h3>符文骰</h3>
+      <p>掷两枚古骰，以决吉凶。</p>
+      <div class="dice-area" id="diceArea">
+        <span class="die">?</span><span class="die">?</span>
+      </div>
+      <button class="btn-rune" id="diceBtn">掷骰</button>
+      <div class="oracle-display" id="diceResult" style="font-size:1.1rem; min-height:1.5rem;"></div>
+    </div>
+
+    <!-- 玩意3：今日箴言 -->
+    <div class="toy reveal">
+      <h3>今日箴言</h3>
+      <p>翻开羊皮，取一句古训为今日之铭。</p>
+      <button class="btn-rune" id="proverbBtn">揭帖</button>
+      <div class="oracle-display" id="proverbDisplay" style="font-size:1.15rem;"></div>
+    </div>
+
+    <div class="page-divider">✦ ✦ ✦</div>
+
+    <p style="text-align:center; font-style:italic; color:var(--ink-soft);">
+      匣底尚有余位，异日再添新物。
+    </p>
+  </article>
+
+  <footer class="foot">
+    <a href="index.html" style="color:var(--parchment-dark); text-decoration:none; border-bottom:1px dotted var(--parchment-dark);">← 返回书桌</a>
+    <span class="sep">✦</span> 烛火摇曳，墨迹未干 <span class="sep">✦</span>
+  </footer>
+</main>
+
+<script src="assets/main.js"></script>
+<script>
+/* ---------- 占卜水晶球 ---------- */
+const oracles = [
+  "星辰示以吉兆，宜前行。",
+  "雾色未明，且待明日再问。",
+  "所求之事，藏于汝心深处。",
+  "逆风而行，亦能至岸。",
+  "莫问前程，但问脚下。",
+  "天机不可泄，唯勤可解之。",
+  "旧缘将续，新缘未至。",
+  "所失之物，近在咫尺。",
+  "慎言，慎行，慎信。",
+  "今日宜静，不宜动。"
+];
+const oracleBtn = document.getElementById('oracleBtn');
+const oracleDisplay = document.getElementById('oracleDisplay');
+oracleBtn.addEventListener('click', () => {
+  oracleDisplay.style.opacity = '0';
+  setTimeout(() => {
+    oracleDisplay.textContent = oracles[Math.floor(Math.random() * oracles.length)];
+    oracleDisplay.style.opacity = '1';
+  }, 250);
+});
+
+/* ---------- 符文骰 ---------- */
+const diceBtn = document.getElementById('diceBtn');
+const diceArea = document.getElementById('diceArea');
+const diceResult = document.getElementById('diceResult');
+const runes = ['ᚠ','ᚢ','ᚦ','ᚨ','ᚱ','ᚲ'];
+diceBtn.addEventListener('click', () => {
+  const dice = diceArea.querySelectorAll('.die');
+  dice.forEach(d => { d.classList.add('rolling'); d.textContent = runes[Math.floor(Math.random()*runes.length)]; });
+  setTimeout(() => {
+    dice.forEach(d => d.classList.remove('rolling'));
+    const vals = Array.from(dice).map(d => runes.indexOf(d.textContent) + 1);
+    const sum = vals.reduce((a,b)=>a+b,0);
+    let fate = sum >= 8 ? "大吉" : sum >= 5 ? "中平" : "小凶";
+    diceResult.textContent = `得 ${sum} 点 —— ${fate}`;
+  }, 500);
+});
+
+/* ---------- 今日箴言 ---------- */
+const proverbs = [
+  "智者非无所不知，乃知其不知也。",
+  "黑暗中的烛火，胜于正午的盲眼。",
+  "山不辞土，故能成其高。",
+  "光阴如沙，握紧则漏，摊掌则留。",
+  "勇者非无惧，乃携惧而行。",
+  "静水流深，浅水多声。",
+  "笔比剑利，然心比笔锐。",
+  "迷失于林者，方知星辰之贵。"
+];
+document.getElementById('proverbBtn').addEventListener('click', () => {
+  const el = document.getElementById('proverbDisplay');
+  el.style.opacity = '0';
+  setTimeout(() => {
+    el.textContent = '"' + proverbs[Math.floor(Math.random()*proverbs.length)] + '"';
+    el.style.opacity = '1';
+  }, 250);
+});
+</script>
+</body>
+</html>
